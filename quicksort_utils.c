@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/04/29 15:37:31 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/04/29 16:03:56 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,28 @@ void	ft_ali_quick_sort(t_stacks *stacks)
 	reverse_insertion(stacks->b.top);
 	free(pivot_content);
 }
-
 t_list_contents	*find_pivots(t_stacks *stacks, int amount)
+{
+	t_list_contents	*pivot_options;
+	
+	pivot_options = find_pivot_options(stacks, amount);
+	
+}
+t_list_contents	*find_pivot_options(t_stacks *stacks, int amount)
 {
 	int				listsize;
 	int				chunksize;
 	int				remainder;
 	int 			i;
-	t_list_contents	*pivots;
 	t_list_contents	*pivot_options;
 
 	i = 0;
 	listsize = ft_lstsize(stacks->a.top);
 	chunksize = listsize / amount;
 	remainder = listsize % amount;
-	pivots = malloc(amount * sizeof(t_list_contents));
-	if (!pivots)
-		return (NULL);
 	pivot_options = malloc((amount * 3) * sizeof(t_list_contents));
 	if(!pivot_options)
-		return(free(pivots), NULL);
+		return( NULL);
 	while(i < amount)
 	{
 		pivot_options[i * 3] = *get(&stacks->a, (i * chunksize));
@@ -86,6 +88,7 @@ t_list_contents	*find_pivots(t_stacks *stacks, int amount)
 		pivot_options [i * 3 + 2] = *get(&stacks->a, (i * chunksize) + chunksize);
 		i++;
 	}
+	return(pivot_options);
 }
 
 // t_stacks → t_stack → t_list → t_list_contents
