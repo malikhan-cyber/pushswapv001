@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                         ::::::::           */
-/*   position_utils.h                                    :+:    :+:           */
-/*                                                      +:+                   */
-/*   By: kmurray <kmurray@student.codam.nl>            +#+                    */
-/*                                                    +#+                     */
-/*   Created: 2026/04/22 17:30:37 by kmurray        #+#    #+#                */
-/*   Updated: 2026/04/24 18:01:29 by kmurray        ########   odam.nl        */
+/*                                                        :::      ::::::::   */
+/*   position_utils.h                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/22 17:30:37 by kmurray           #+#    #+#             */
+/*   Updated: 2026/05/01 13:08:54 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,3 +14,4 @@
 
 int				find_min_value(t_stack *stack);
 int				find_min_position(t_stack *stack);
+

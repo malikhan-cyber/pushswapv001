@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quicksort_utils.c                                  :+:      :+:    :+:   */
+/*   quicksort_utils.c                                  :+:      :+:    :+:   */ 
 /*                                                    +:+ +:+         +:+     */
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -36,7 +36,7 @@ int	ft_median_pivot(int first, int middle, int last)
 		result = last;
 	return (result);
 }
-void	ft_ali_quick_sort(t_stacks *stacks)
+void	alis_quickie(t_stacks *stacks)
 {
 	int				listsize;
 	t_list_contents	*pivot_content;
