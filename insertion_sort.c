@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 17:49:26 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/02 15:43:53 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/02 17:32:49 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,20 @@ int	find_pos_in_b(t_stacks *stacks, int value)
 		else
 			return (find_max_pos() - 1);
 	}
+	if (value < min_value)
+	{
+		if (find_min_pos() == ft_lstsize(stacks->b.top))
+			return (ft_lstsize(stacks->b.top));
+		else
+			return (find_min_pos() + 1);
+	}
 	while (node_b)
 	{
-		if (value > get_content(node_b)->value)
-			;
+		if (((value > get_content(node_b)->value)
+				&& (value < get_content(node_b->next)->value))
+			|| ((value < get_content(node_b)->value)
+				&& (value > get_content(node_b->next)->value)))
+			return (get_content(node_b)->index);
 		node_b = node_b->next;
 	}
 }
@@ -69,7 +79,7 @@ void	move_and_sort_to(t_stacks *stacks, t_stack_name *stackname)
 
 	listsize = ft_lstsize(stacks->a.top);
 	while (listsize > 0)
-		stacks->b.top->content
+		stacks->b.top->content;
 }
 // This function is going to set up stack B, before insertion starts,
 // add 3 numbers from stack a, and sort them.
