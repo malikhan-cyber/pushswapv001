@@ -18,9 +18,9 @@ int	find_ideal_pivot(t_stack *stack, t_segment segment)
 {
 	int	pivot[3];
 
-	pivot[0] = get(segment.start);
-	pivot[1] = get(segment.end);
-	pivot[2] = get(segment.end - segment.start);
+	pivot[0] = get(stack, segment.start);
+	pivot[1] = get(stack, segment.end);
+	pivot[2] = get(stack, segment.end - segment.start);
 	return (ft_median_pivot(pivot[0], pivot[1], pivot[2]));
 }
 
