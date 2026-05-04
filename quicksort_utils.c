@@ -56,6 +56,7 @@ void	alis_quickie(t_stacks *stacks)
 	reverse_insertion(stacks->b.top);
 	free(pivot_content);
 }
+
 t_list_contents	*find_pivots(t_stacks *stacks, int amount)
 {
 	t_list_contents	*pivot_options;
@@ -63,6 +64,12 @@ t_list_contents	*find_pivots(t_stacks *stacks, int amount)
 	pivot_options = find_pivot_options(stacks, amount);
 	
 }
+
+t_list_contents *sort_pivot_options(t_stacks *stacks)
+{
+
+}
+
 t_list_contents	*find_pivot_options(t_stacks *stacks, int amount)
 {
 	int				listsize;
@@ -88,6 +95,7 @@ t_list_contents	*find_pivot_options(t_stacks *stacks, int amount)
 		pivot_options [i * 3 + 2] = *get(&stacks->a, (i * chunksize) + chunksize);
 		i++;
 	}
+	pivot_options = sort_pivot_options(pivot_options);
 	return(pivot_options);
 }
 
