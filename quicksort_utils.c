@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/06 15:34:05 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/06 17:27:46 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,8 @@ void	alis_quickie(t_stacks *stacks)
 	start_moving_back(stacks->b.top);
 	free(pivot_content);
 }
-
-void	start_moving_back(t_stacks *stacks)
-{
-	set_stack_a(stacks);
-	while (stacks->b.top != 0)
-	{
-		doe de berekeningen door een counter bij te houden en 
+	
+		/* doe de berekeningen door een counter bij te houden en 
 		dan te kijken naar hoe ver iets van top of bottem staat 
 		hou altijd list-size bij zodat je weet wat eerste en laatste plek is,
 		hou een counter bij voor het getal wat je wil inserten of selecten,
@@ -58,8 +53,64 @@ void	start_moving_back(t_stacks *stacks)
 		kijk naar juist plek waarin hij geinsert zou moeten worden 
 		kijk hoe ver die locatie van top of bodem is verwijderd
 		kies kleinste getal en sla op in "insertion_moves"
-		afhankelijke van welke minste moves moet maken kies die methode om getal naar A te pushen
+		afhankelijke van welke minste moves moet maken kies die methode om getal naar A te pushen */
+		
+void	start_moving_back(t_stacks *stacks)
+{
+	int index_a;
+	int index_b;
+	t_list *node;
+	
+	node = stacks->b.top;
+	set_stack_a(stacks);
+	while (ft_lstsize(node) != 0)
+	{
+		index_b = find_selection_value(stacks);
+		index_a = insertion_insertion_value(stacks);
+		if (index_b < index_a)
+			insertion(stacks, index_b);
+		else 
+			selection(stacks, index_a);
 	}
+}
+void insertion(t_stacks *stacks, int index)
+{
+	
+}
+void selection(t_stacks *stacks, int index)
+{
+	
+}
+int	find_selection_value(t_stacks *stacks)
+{
+	t_list *node;
+	int max_value;
+	int counter;
+
+	counter = 0;
+	node = stacks->b.top;
+	max_value = get_content(node)->value;
+	while(node)
+	{
+		if(get_content(node->next)->value > max_value)
+			max_value = get_content(node->next)->value;
+		node = node->next;
+		counter++;
+	}
+	return(counter);
+}
+
+int find_insertion_value(t_stacks *stacks)
+{
+	int	value_b;
+	int counter;
+	t_list *node;
+	
+	node = stacks->a.top;
+	counter = 0;
+	value_b = get_content(stacks->b.top)->value;
+	while(node)
+		if
 }
 
 int	set_stack_a(t_stacks *stacks)
