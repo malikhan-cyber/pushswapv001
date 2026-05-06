@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 17:49:26 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/05 16:35:45 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/06 14:54:35 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	insertion_sort(t_stacks *stacks)
 
 int	set_stack_b(t_stacks *stacks)
 {
-	while (ft_lstsize(stacks->b.top) < 3)
-		opp_push(stacks, A);
+	while (ft_lstsize(stacks->b.top) != 3)
+		opp_push(stacks, B);
 	if (is_stack_sorted_rev(stacks->b.top) == true)
 		return (1);
 	if (get_content(stacks->b.top)->value > get_content(stacks->b.top->next)->value
