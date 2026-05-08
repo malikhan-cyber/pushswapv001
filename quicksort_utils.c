@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/08 16:01:33 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/08 17:40:07 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	start_moving_back(t_stacks *stacks)
 	set_stack_a(stacks);
 	while (ft_lstsize(node_b) != 0)
 	{
-		index_b = find_selection_value(stacks);
-		index_a = find_insert_pos(&stacks->a.top,
+		index_b = find_selection_pos(stacks);
+		index_a = find_insert_pos(&stacks->a,
 				get_content(stacks->b.top)->value);
 		if (index_a < (ft_lstsize(node_a) - index_a))
 			moves_a = index_a;
@@ -106,16 +106,16 @@ void	selection(t_stacks *stacks, int index)
 	}
 	else
 	{
-		while (index != ft_lstsize(stacks->a.top) + 1)
+		while (index != ft_lstsize(stacks->b.top) + 1)
 		{
 			opp_rrot(stacks, B);
 			index++;
 		}
 	}
-	opp_push(stacks, A);
+	opp_push(stacks, B);
 }
 
-int	find_selection_value(t_stacks *stacks)
+int	find_selection_pos(t_stacks *stacks)
 {
 	t_list	*node;
 	int		max_value;
@@ -126,10 +126,15 @@ int	find_selection_value(t_stacks *stacks)
 	max_value = get_content(node)->value;
 	while (node)
 	{
-		if (get_content(node->next)->value > max_value)
+		if (node->next != NULL && get_content(node->next)->value > max_value)
 			max_value = get_content(node->next)->value;
 		node = node->next;
+	}
+	node = stacks->b.top;
+	while(get_content(node->next)->value != max_value)
+	{
 		counter++;
+		node = node->next;
 	}
 	return (counter);
 }
@@ -161,16 +166,19 @@ int	set_stack_a(t_stacks *stacks)
 void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 		int pivot_count)
 {
+	int counter;
 	t_list	*node;
 
+	counter = 0;
 	node = stacks->a.top;
 	while (ft_lstsize(node) != 0)
 	{
 		while (node)
 		{
 			if (get_content(node)->value <= pivots[0].value)
-				move_to_b(stacks, get_content(node)->index, ft_lstsize(node));
+				move_to_b(stacks, counter, ft_lstsize(node));
 			node = node->next;
+			counter++;
 		}
 	}
 }
@@ -210,18 +218,18 @@ t_list_contents	*find_pivots(t_stacks *stacks, int amount)
 	pivot_options = find_pivot_options(stacks, amount);
 	if (amount == 1)
 		final_pivots[0] = pivot_options[2];
-	if (amount == 2)
+	else if (amount == 2)
 	{
 		final_pivots[0] = pivot_options[2];
 		final_pivots[1] = pivot_options[5];
 	}
-	if (amount == 3)
+	else if (amount == 3)
 	{
 		final_pivots[0] = pivot_options[2];
 		final_pivots[1] = pivot_options[5];
 		final_pivots[2] = pivot_options[8];
 	}
-	if (amount == 4)
+	else if (amount == 4)
 	{
 		final_pivots[0] = pivot_options[2];
 		final_pivots[1] = pivot_options[5];
