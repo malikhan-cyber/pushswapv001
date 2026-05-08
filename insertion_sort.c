@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 17:49:26 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/06 14:54:35 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/08 13:12:39 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "sorting.h"
 #include "stack.h"
 #include <stdbool.h>
+#include "position_utils.h"
 
 static void	insertion_sort(t_stacks *stacks)
 {
@@ -25,7 +26,7 @@ static void	insertion_sort(t_stacks *stacks)
 		return ;
 	while(stacks->b.top)
 		{	
-			insert_position = find_pos_in_b(stacks, get_content(stacks->a.top)->value);
+			insert_position = find_insert_pos(&stacks->b, get_content(stacks->a.top)->value);
 			rotate_and_move(stacks, insert_position);
 		}
 	rev_move_to(stacks);
@@ -73,37 +74,7 @@ bool	is_stack_sorted_rev(t_stack *stacks)
 	return (true);
 }
 
-int	find_pos_in_b(t_stacks *stacks, int value)
-{
-	int		max_value;
-	int		min_value;
-	t_list	*node_b;
 
-	node_b = stacks->b.top;
-	max_value = find_max_value();
-	min_value = find_min_value();
-	if (value > max_value)
-	{
-		if (find_max_pos() == 0)
-			return (0);
-		else
-			return (find_max_pos() - 1);
-	}
-	if (value < min_value)
-	{
-		if (find_min_pos() == ft_lstsize(stacks->b.top))
-			return (ft_lstsize(stacks->b.top));
-		else
-			return (find_min_pos() + 1);
-	}
-	while (node_b)
-	{
-		if (((value < get_content(node_b)->value)
-				&& (value > get_content(node_b->next)->value)))
-			return (get_content(node_b)->index);
-		node_b = node_b->next;
-	}
-}
 
 void	rotate_and_move(t_stacks *stacks, int current_pos)
 {
@@ -120,6 +91,7 @@ void	rev_move_to(t_stacks *stacks)
 	while(stacks->b.top)
 		opp_push(stacks, A);
 }
+
 
 // void	move_and_sort_to(t_stacks *stacks, t_stack_name *stackname)
 // {
