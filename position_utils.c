@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 10:08:18 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/09 21:07:53 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/09 21:31:14 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	find_insert_pos(t_stack *stack, int value)
 	counter = 0;
 	node = stack->top;
 	if (value > find_max_value(stack))
-		return(find_max_positio(stack));
+		return(find_max_position(stack));
 	if (value < find_min_value(stack))
 	{
 		if (find_min_pos(stack) == ft_lstsize(stack))
@@ -116,9 +116,9 @@ int	find_insert_pos(t_stack *stack, int value)
 	}
 	while (counter != ft_lstsize(stack))
 	{
-		if (node->next, ((value < get_content(node)->value)
+		if (node->next && ((value < get_content(node)->value)
 				&& (value > get_content(node->next)->value)))
-			return (counter);
+			return (counter+1);
 		node = node->next;
 		counter++;
 	}
