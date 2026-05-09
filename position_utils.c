@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 10:08:18 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/08 14:07:06 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/09 21:07:53 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,32 +101,25 @@ bool	is_stack_sorted(t_stack *stack)
 
 int	find_insert_pos(t_stack *stack, int value)
 {
-	int		max_value;
-	int		min_value;
-	t_list	*node_b;
+	int		counter;
+	t_list	*node;
 
-	node_b = stack->top;
-	max_value = find_max_value(stack);
-	min_value = find_min_value(stack);
-	if (value > max_value)
+	counter = 0;
+	node = stack->top;
+	if (value > find_max_value(stack))
+		return(find_max_positio(stack));
+	if (value < find_min_value(stack))
 	{
-		if (find_max_pos() == 0)
-			return (0);
-		else
-			return (find_max_pos() - 1);
-	}
-	if (value < min_value)
-	{
-		if (find_min_pos() == ft_lstsize(stack))
+		if (find_min_pos(stack) == ft_lstsize(stack))
 			return (ft_lstsize(stack));
-		else
-			return (find_min_pos(stack) + 1);
+		return (find_min_pos(stack) + 1);
 	}
-	while (node_b)
+	while (counter != ft_lstsize(stack))
 	{
-		if (((value < get_content(node_b)->value)
-				&& (value > get_content(node_b->next)->value)))
-			return (get_content(node_b)->index);
-		node_b = node_b->next;
+		if (node->next, ((value < get_content(node)->value)
+				&& (value > get_content(node->next)->value)))
+			return (counter);
+		node = node->next;
+		counter++;
 	}
 }
