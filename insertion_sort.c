@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 17:49:26 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/08 13:12:39 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/09 12:33:35 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	set_stack_b(t_stacks *stacks)
 {
 	while (ft_lstsize(stacks->b.top) != 3)
 		opp_push(stacks, B);
-	if (is_stack_sorted_rev(stacks->b.top) == true)
+	if (is_stack_sorted_rev(stacks) == true)
 		return (1);
 	if (get_content(stacks->b.top)->value > get_content(stacks->b.top->next)->value
 		&& get_content(stacks->b.top)->value > get_content(stacks->b.top->next->next)->value)
@@ -58,11 +58,11 @@ int	set_stack_b(t_stacks *stacks)
 		return (opp_swap(stacks, B), 1);
 	return (-1);
 }
-bool	is_stack_sorted_rev(t_stack *stacks)
+bool	is_stack_sorted_rev(t_stacks *stacks)
 {
 	t_list	*node;
 
-	node = stacks->top;
+	node = stacks->b.top;
 	if (!node)
 		return (true);
 	while (node->next)

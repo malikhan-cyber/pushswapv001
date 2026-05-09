@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/08 17:40:07 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/09 13:32:38 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	alis_quickie(t_stacks *stacks)
 		pivot_content = find_pivots(stacks, 3);
 	else if (listsize > 250)
 		pivot_content = find_pivots(stacks, 4);
-	start_quickie_pivots(stacks->a.top, pivot_content, pivot_count);
-	start_moving_back(stacks->b.top);
+	start_quickie_pivots(stacks, pivot_content, pivot_count);
+	start_moving_back(stacks);
 	free(pivot_content);
 }
 
@@ -53,7 +53,7 @@ void	start_moving_back(t_stacks *stacks)
 	node_b = stacks->b.top;
 	node_a = stacks->a.top;
 	set_stack_a(stacks);
-	while (ft_lstsize(node_b) != 0)
+	while (ft_lstsize(stacks->b.top) != 0)
 	{
 		index_b = find_selection_pos(stacks);
 		index_a = find_insert_pos(&stacks->a,
@@ -91,7 +91,7 @@ void	insertion(t_stacks *stacks, int index)
 			index++;
 		}
 	}
-	opp_push(stacks, B);
+	opp_push(stacks, A);
 }
 
 void	selection(t_stacks *stacks, int index)
@@ -112,7 +112,7 @@ void	selection(t_stacks *stacks, int index)
 			index++;
 		}
 	}
-	opp_push(stacks, B);
+	opp_push(stacks, A);
 }
 
 int	find_selection_pos(t_stacks *stacks)
@@ -143,26 +143,38 @@ int	set_stack_a(t_stacks *stacks)
 {
 	while (ft_lstsize(stacks->a.top) != 3)
 		opp_push(stacks, A);
-	if (is_stack_sorted_rev(stacks->a.top) == true)
+	if (is_stack_sorted(stacks) == true)
 		return (1);
 	if (get_content(stacks->a.top)->value > get_content(stacks->a.top->next)->value
-		&& get_content(stacks->a.top)->value > get_content(stacks->a.top->next->next)->value)
+		&& get_content(stacks->a.top->next)->value > get_content(stacks->a.top->next->next)->value)
 		return (opp_rot(stacks, A), opp_swap(stacks, A), 1);
-	else if (get_content(stacks->a.top)->value > get_content(stacks->a.top->next)->value
-		&& get_content(stacks->a.top)->value < get_content(stacks->a.top->next->next)->value)
-		return (opp_rrot(stacks, A), 1);
+	else if (get_content(stacks->a.top)->value > get_content(stacks->a.top->next->next)->value
+		&& get_content(stacks->a.top->next->next)->value > get_content(stacks->a.top->next)->value)
+		return (opp_rot(stacks, A), 1);
 	else if (get_content(stacks->a.top)->value < get_content(stacks->a.top->next)->value
 		&& get_content(stacks->a.top->next->next)->value < get_content(stacks->a.top->next)->value)
-		return (opp_rot(stacks, A), 1);
-	else if (get_content(stacks->a.top->next->next)->value > get_content(stacks->a.top->next)->value
-		&& get_content(stacks->a.top->next)->value > get_content(stacks->a.top)->value)
-		return (opp_swap(stacks, A), opp_rrot(stacks, A), 1);
-	else if (get_content(stacks->a.top->next)->value > get_content(stacks->a.top)->value
-		&& get_content(stacks->a.top->next)->value > get_content(stacks->a.top->next->next)->value)
+		return (opp_rrot(stacks, A), opp_swap(stacks, A), 1);
+	else if (get_content(stacks->a.top->next->next)->value > get_content(stacks->a.top)->value
+		&& get_content(stacks->a.top)->value > get_content(stacks->a.top->next)->value)
 		return (opp_swap(stacks, A), 1);
+	else if (get_content(stacks->a.top->next)->value > get_content(stacks->a.top)->value
+		&& get_content(stacks->a.top)->value > get_content(stacks->a.top->next->next)->value)
+		return (opp_rrot(stacks, A), 1);
 	return (-1);
 }
+bool	is_stack_sorted(t_stacks *stacks)
+{
+	t_list *node;
 
+	node = stacks->a.top;
+	while(node && node->next != NULL)
+	{
+		if(!(get_content(node)->value < get_content(node->next)->value))
+			return(false);
+		node = node->next;
+	}
+	return(true);
+}
 void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 		int pivot_count)
 {
@@ -171,12 +183,12 @@ void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 
 	counter = 0;
 	node = stacks->a.top;
-	while (ft_lstsize(node) != 0)
+	while (ft_lstsize(stacks->a.top) != 0)
 	{
 		while (node)
 		{
-			if (get_content(node)->value <= pivots[0].value)
-				move_to_b(stacks, counter, ft_lstsize(node));
+			if (get_content(node)->value <= pivots[0].value) //nakijken
+				move_to_b(stacks, counter, ft_lstsize(stacks->a.top));
 			node = node->next;
 			counter++;
 		}
@@ -195,6 +207,7 @@ void	move_to_b(t_stacks *stacks, int move_index, int listsize)
 			opp_rot(stacks, A);
 			i--;
 		}
+		opp_push(stacks, B);
 	}
 	else
 	{
@@ -203,7 +216,9 @@ void	move_to_b(t_stacks *stacks, int move_index, int listsize)
 			opp_rrot(stacks, A);
 			i++;
 		}
+		opp_push(stacks, B);
 	}
+	
 }
 
 t_list_contents	*find_pivots(t_stacks *stacks, int amount)
@@ -217,26 +232,26 @@ t_list_contents	*find_pivots(t_stacks *stacks, int amount)
 		return (NULL);
 	pivot_options = find_pivot_options(stacks, amount);
 	if (amount == 1)
-		final_pivots[0] = pivot_options[2];
+		final_pivots[0] = pivot_options[1];
 	else if (amount == 2)
 	{
-		final_pivots[0] = pivot_options[2];
-		final_pivots[1] = pivot_options[5];
+		final_pivots[0] = pivot_options[1];
+		final_pivots[1] = pivot_options[4];
 	}
 	else if (amount == 3)
 	{
-		final_pivots[0] = pivot_options[2];
-		final_pivots[1] = pivot_options[5];
-		final_pivots[2] = pivot_options[8];
+		final_pivots[0] = pivot_options[1];
+		final_pivots[1] = pivot_options[4];
+		final_pivots[2] = pivot_options[7];
 	}
 	else if (amount == 4)
 	{
-		final_pivots[0] = pivot_options[2];
-		final_pivots[1] = pivot_options[5];
-		final_pivots[2] = pivot_options[8];
-		final_pivots[3] = pivot_options[11];
+		final_pivots[0] = pivot_options[1];
+		final_pivots[1] = pivot_options[4];
+		final_pivots[2] = pivot_options[7];
+		final_pivots[3] = pivot_options[10];
 	}
-	return (free(pivot_options), pivot_options = NULL, final_pivots);
+	return (free(pivot_options), final_pivots);
 }
 
 t_list_contents	*sort_pivot_options(t_list_contents *pivot_options,
@@ -258,7 +273,7 @@ t_list_contents	*sort_pivot_options(t_list_contents *pivot_options,
 		size_pivot_list--;
 		i++;
 	}
-	return (free(pivot_options), pivot_options = NULL, pivot_options_sorted);
+	return (free(pivot_options), pivot_options_sorted);
 }
 
 int	find_smallest_pivot(t_list_contents *pivot_options, int size_pivot_list)
