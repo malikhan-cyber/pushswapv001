@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/11 11:48:33 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/11 15:05:57 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,20 +141,20 @@ int	set_stack_a(t_stacks *stacks)
 		opp_push(stacks, A);
 	if (is_stack_sorted(stacks) == true)
 		return (1);
-	if (get_content(stacks->a.top)->value > get_content(stacks->a.top->next)->value
-		&& get_content(stacks->a.top->next)->value > get_content(stacks->a.top->next->next)->value)
+	if (get(stacks->a.top, 0)->value > get(stacks->a.top, 1)->value
+		&& get(stacks->a.top, 1)->value > get(stacks->a.top, 2)->value)
 		return (opp_rot(stacks, A), opp_swap(stacks, A), 1);
-	else if (get_content(stacks->a.top)->value > get_content(stacks->a.top->next->next)->value
-		&& get_content(stacks->a.top->next->next)->value > get_content(stacks->a.top->next)->value)
+	else if (get(stacks->a.top, 0)->value > get(stacks->a.top, 2)->value
+		&& get(stacks->a.top, 2)->value > get(stacks->a.top, 1)->value)
 		return (opp_rot(stacks, A), 1);
-	else if (get_content(stacks->a.top)->value < get_content(stacks->a.top->next)->value
-		&& get_content(stacks->a.top->next->next)->value < get_content(stacks->a.top->next)->value)
+	else if (get(stacks->a.top, 0)->value < get(stacks->a.top, 1)->value
+		&& get(stacks->a.top, 2)->value < get(stacks->a.top, 1)->value)
 		return (opp_rrot(stacks, A), opp_swap(stacks, A), 1);
-	else if (get_content(stacks->a.top->next->next)->value > get_content(stacks->a.top)->value
-		&& get_content(stacks->a.top)->value > get_content(stacks->a.top->next)->value)
+	else if (get(stacks->a.top, 2)->value > get(stacks->a.top, 0)->value
+		&& get(stacks->a.top, 0)->value > get(stacks->a.top, 1)->value)
 		return (opp_swap(stacks, A), 1);
-	else if (get_content(stacks->a.top->next)->value > get_content(stacks->a.top)->value
-		&& get_content(stacks->a.top)->value > get_content(stacks->a.top->next->next)->value)
+	else if (get(stacks->a.top, 1)->value > get(stacks->a.top, 0)->value
+		&& get(stacks->a.top, 0)->value > get(stacks->a.top, 2)->value)
 		return (opp_rrot(stacks, A), 1);
 	return (-1);
 }
@@ -236,26 +236,14 @@ t_list_contents	*find_pivots(t_stacks *stacks, int amount)
 	if (!final_pivots || !pivot_options)
 		return (NULL);
 	pivot_options = find_pivot_options(stacks, amount);
-	if (amount == 1)
+	if (amount >= 1)
 		final_pivots[0] = pivot_options[1];
-	else if (amount == 2)
-	{
-		final_pivots[0] = pivot_options[1];
+	if (amount >= 2)
 		final_pivots[1] = pivot_options[4];
-	}
-	else if (amount == 3)
-	{
-		final_pivots[0] = pivot_options[1];
-		final_pivots[1] = pivot_options[4];
+	if (amount >= 3)
 		final_pivots[2] = pivot_options[7];
-	}
-	else if (amount == 4)
-	{
-		final_pivots[0] = pivot_options[1];
-		final_pivots[1] = pivot_options[4];
-		final_pivots[2] = pivot_options[7];
+	if (amount == 4)
 		final_pivots[3] = pivot_options[10];
-	}
 	return (free(pivot_options), final_pivots);
 }
 
@@ -326,6 +314,5 @@ t_list_contents	*find_pivot_options(t_stacks *stacks, int amount)
 					+ chunksize);
 		i++;
 	}
-	pivot_options = sort_pivot_options(pivot_options, (amount * 3));
-	return (pivot_options);
+	return (sort_pivot_options(pivot_options, (amount * 3)));
 }

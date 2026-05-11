@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 17:49:26 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/11 11:55:22 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/11 15:13:25 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,24 @@ int	set_stack_b(t_stacks *stacks)
 		opp_push(stacks, B);
 	if (is_stack_sorted_rev(stacks) == true)
 		return (1);
-	if (get_content(stacks->b.top)->value > get_content(stacks->b.top->next->next)->value
-		&& get_content(stacks->b.top->next->next)->value > get_content(stacks->b.top->next)->value)
+	if (get(stacks->b.top, 0)->value > get(stacks->b.top, 2)->value
+		&& get(stacks->b.top, 2)->value > get(stacks->b.top, 1)->value)
 		return (opp_rrot(stacks, B), opp_swap(stacks, B), 1);
-	else if (get_content(stacks->b.top->next)->value > get_content(stacks->b.top)->value
-		&& get_content(stacks->b.top)->value > get_content(stacks->b.top->next->next)->value)
+	else if (get(stacks->b.top, 1)->value > get(stacks->b.top, 0)->value
+		&& get(stacks->b.top, 0)->value > get(stacks->b.top, 2)->value)
 		return (opp_swap(stacks, B), 1);
-	else if (get_content(stacks->b.top->next->next)->value > get_content(stacks->b.top)->value
-		&& get_content(stacks->b.top)->value > get_content(stacks->b.top->next)->value)
+	else if (get(stacks->b.top, 2)->value > get(stacks->b.top, 0)->value
+		&& get(stacks->b.top, 0)->value > get(stacks->b.top, 1)->value)
 		return (opp_rrot(stacks, B), 1);
-	else if (get_content(stacks->b.top->next)->value > get_content(stacks->b.top->next->next)->value
-		&& get_content(stacks->b.top->next->next)->value > get_content(stacks->b.top)->value)
+	else if (get(stacks->b.top, 1)->value > get(stacks->b.top, 2)->value
+		&& get(stacks->b.top, 2)->value > get(stacks->b.top, 0)->value)
 		return (opp_rot(stacks, B), 1);
-	else if (get_content(stacks->b.top->next->next)->value > get_content(stacks->b.top->next)->value
-		&& get_content(stacks->b.top->next)->value > get_content(stacks->b.top)->value)
+	else if (get(stacks->b.top, 2)->value > get(stacks->b.top, 1)->value
+		&& get(stacks->b.top, 1)->value > get(stacks->b.top, 0)->value)
 		return (opp_swap(stacks, B), opp_rot(stacks, B), 1);
 	return (-1);
 }
+
 bool	is_stack_sorted_rev(t_stacks *stacks)
 {
 	t_list	*node;
