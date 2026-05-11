@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/09 13:32:38 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/11 10:34:59 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	alis_quickie(t_stacks *stacks)
 	start_moving_back(stacks);
 	free(pivot_content);
 }
-
+//START_MOVING_BACK MOET MAKKELIJKER KUNNEN EN KORTER, 
+//LOGICA NAKIJKEN EN SPLITSEN OF HERSCHRIJVEN, LSTSIZE NOOIT MET COPY NAAR POINTER.
 void	start_moving_back(t_stacks *stacks)
 {
 	int		index_a;
@@ -55,7 +56,7 @@ void	start_moving_back(t_stacks *stacks)
 	set_stack_a(stacks);
 	while (ft_lstsize(stacks->b.top) != 0)
 	{
-		index_b = find_selection_pos(stacks);
+		index_b = find_selection_pos(stacks->b.top);
 		index_a = find_insert_pos(&stacks->a,
 				get_content(stacks->b.top)->value);
 		if (index_a < (ft_lstsize(node_a) - index_a))
@@ -175,6 +176,7 @@ bool	is_stack_sorted(t_stacks *stacks)
 	}
 	return(true);
 }
+// ER ZIT HIER OOK EEN FOUT IN DE WHILE LOOP KIJK LOGICA NA EN HERSCHRIJF.
 void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 		int pivot_count)
 {
@@ -187,7 +189,7 @@ void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 	{
 		while (node)
 		{
-			if (get_content(node)->value <= pivots[0].value) //nakijken
+			if (get_content(node)->value <= pivots[0].value) //NAKIJKEN!!
 				move_to_b(stacks, counter, ft_lstsize(stacks->a.top));
 			node = node->next;
 			counter++;
@@ -291,7 +293,7 @@ int	find_smallest_pivot(t_list_contents *pivot_options, int size_pivot_list)
 	}
 	return (smallest);
 }
-
+//MOET OOK HERSCHREVEN WORDEN OF GESPLITS IN MEERDERE FUNCTIES.
 t_list_contents	*find_pivot_options(t_stacks *stacks, int amount)
 {
 	int				listsize;
