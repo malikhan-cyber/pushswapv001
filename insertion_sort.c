@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 17:49:26 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/09 19:32:59 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/11 11:55:22 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	insertion_sort(t_stacks *stacks)
 		return ;
 	while (stacks->b.top)
 	{
-		insert_position = find_insert_pos(&stacks->b,
+		insert_position = find_insert_pos_rev(&stacks->b,
 				get_content(stacks->a.top)->value);
 		rotate_and_move(stacks, insert_position);
 	}

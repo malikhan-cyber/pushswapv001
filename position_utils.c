@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 10:08:18 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/11 10:34:28 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/11 12:10:42 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,20 +132,38 @@ int	find_insert_pos(t_stack *stack, int value)
 
 	counter = 0;
 	node = stack->top;
-	if (value > find_max_value(stack))
-		return(find_max_position(stack));
+	if(value > find_max_value(stack))
+		return(new_biggest_number(&stack, value));
+	if(value < find_max_value(stack))
+		return(new_smallest_number(&stack, value));
+	while (counter != ft_lstsize(stack))
+	{
+		if (node->next && ((value > get_content(node)->value)
+				&& (value < get_content(node->next)->value)))
+			return (counter+1);
+		node = node->next;
+		counter++;
+	}
+}
+int new_biggest_number(t_stack *stack, int value)
+{
+		if (value > find_max_value(stack))
+		return(find_max_position(stack)+1);
 	if (value < find_min_value(stack))
 	{
 		if (find_min_pos(stack) == ft_lstsize(stack))
 			return (ft_lstsize(stack));
 		return (find_min_pos(stack) - 1);
 	}
-	while (counter != ft_lstsize(stack))
+}
+int new_smallest_number(t_stack *stack, int value)
+{
+		if (value > find_max_value(stack))
+		return(find_max_position(stack)+1);
+	if (value < find_min_value(stack))
 	{
-		if (node->next && ((value < get_content(node)->value)
-				&& (value > get_content(node->next)->value)))
-			return (counter+1);
-		node = node->next;
-		counter++;
+		if (find_min_pos(stack) == ft_lstsize(stack))
+			return (ft_lstsize(stack));
+		return (find_min_pos(stack) - 1);
 	}
 }
