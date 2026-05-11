@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/11 15:05:57 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/11 16:53:51 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,25 +181,57 @@ void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 		int pivot_count)
 {
 	int		counter;
+	int i;
 	t_list	*node;
 
+	i = 0;
 	counter = 0;
 	node = stacks->a.top;
 	while (ft_lstsize(stacks->a.top) != 0)
 	{
-		while (node)
+		while (i < pivot_count && node)
 		{
-			if (get_content(node)->value <= pivots[pivot_count].value)
+			if (get_content(node)->value <= pivots[i].value)
 			{
 				move_to_b(stacks, counter, ft_lstsize(stacks->a.top));
 				node = stacks->a.top;
 				counter = 0;
 			}
 			node = node->next;
+			i++;
 			counter++;
 		}
 	}
 }
+void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
+		int pivot_count)
+{
+	int 	pivot_value;
+	int		counter;
+	int i;
+	t_list	*node;
+	/* 
+	kijk vanaf boven hoeveel getallen niet kleiner zijn, sla op first_smallest
+	kijk vanaf onder hoeveel getallen niet kleiner zijn
+	kijk naar het verschil tussen listsize en laatste getal van onderen, sla op als last_smallest
+	kijk naar hoe groot het getal is 
+	*/
+	i = 0;
+	counter = 0;
+	node = stacks->a.top;
+	while (ft_lstsize(stacks->a.top) != 0)
+	{
+		while(i < pivot_count)
+			{
+				pivot_value = pivots[i].value;
+				pivot_position_max();
+				pivot_position_min();
+			}
+			
+		 
+	}
+}
+
 
 void	move_to_b(t_stacks *stacks, int move_index, int listsize)
 {
@@ -231,11 +263,12 @@ t_list_contents	*find_pivots(t_stacks *stacks, int amount)
 	t_list_contents	*pivot_options;
 	t_list_contents	*final_pivots;
 
-	pivot_options = malloc((amount * 3) * sizeof(t_list_contents));
 	final_pivots = malloc(amount * sizeof(t_list_contents));
-	if (!final_pivots || !pivot_options)
+	if (!final_pivots)
 		return (NULL);
 	pivot_options = find_pivot_options(stacks, amount);
+	if (!pivot_options)
+        return (free(final_pivots), NULL);
 	if (amount >= 1)
 		final_pivots[0] = pivot_options[1];
 	if (amount >= 2)
@@ -257,7 +290,7 @@ t_list_contents	*sort_pivot_options(t_list_contents *pivot_options,
 	i = 0;
 	pivot_options_sorted = malloc(size_pivot_list * sizeof(t_list_contents));
 	if (!pivot_options_sorted)
-		return (NULL);
+		return (free(pivot_options), NULL);
 	while (size_pivot_list != 0)
 	{
 		smallest = find_smallest_pivot(pivot_options, size_pivot_list);
