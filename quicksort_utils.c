@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/11 10:34:59 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/11 11:48:33 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,44 +29,39 @@ void	alis_quickie(t_stacks *stacks)
 	if (listsize <= 0)
 		return ;
 	if (listsize <= 75)
-		pivot_content = find_pivots(stacks, 1);
+		pivot_content = find_pivots(stacks, pivot_count += 1);
 	else if (listsize > 75 && listsize <= 125)
-		pivot_content = find_pivots(stacks, 2);
+		pivot_content = find_pivots(stacks, pivot_count += 2);
 	else if (listsize > 125 && listsize <= 250)
-		pivot_content = find_pivots(stacks, 3);
+		pivot_content = find_pivots(stacks, pivot_count += 3);
 	else if (listsize > 250)
-		pivot_content = find_pivots(stacks, 4);
+		pivot_content = find_pivots(stacks, pivot_count += 4);
 	start_quickie_pivots(stacks, pivot_content, pivot_count);
 	start_moving_back(stacks);
 	free(pivot_content);
 }
-//START_MOVING_BACK MOET MAKKELIJKER KUNNEN EN KORTER, 
-//LOGICA NAKIJKEN EN SPLITSEN OF HERSCHRIJVEN, LSTSIZE NOOIT MET COPY NAAR POINTER.
+
 void	start_moving_back(t_stacks *stacks)
 {
-	int		index_a;
-	int		index_b;
-	int		moves_a;
-	int		moves_b;
-	t_list	*node_b;
-	t_list	*node_a;
+	int	index_a;
+	int	index_b;
+	int	moves_a;
+	int	moves_b;
 
-	node_b = stacks->b.top;
-	node_a = stacks->a.top;
 	set_stack_a(stacks);
 	while (ft_lstsize(stacks->b.top) != 0)
 	{
-		index_b = find_selection_pos(stacks->b.top);
+		index_b = find_selection_pos(stacks);
 		index_a = find_insert_pos(&stacks->a,
 				get_content(stacks->b.top)->value);
-		if (index_a < (ft_lstsize(node_a) - index_a))
+		if (index_a < (ft_lstsize(stacks->a.top) - index_a))
 			moves_a = index_a;
 		else
-			moves_a = ft_lstsize(node_a) - index_a;
-		if (index_b < (ft_lstsize(node_b) - index_b))
+			moves_a = ft_lstsize(stacks->a.top) - index_a;
+		if (index_b < (ft_lstsize(stacks->b.top) - index_b))
 			moves_b = index_b;
 		else
-			moves_b = ft_lstsize(node_b) - index_b;
+			moves_b = ft_lstsize(stacks->b.top) - index_b;
 		if (moves_b > moves_a)
 			insertion(stacks, index_a);
 		else
@@ -132,7 +127,7 @@ int	find_selection_pos(t_stacks *stacks)
 		node = node->next;
 	}
 	node = stacks->b.top;
-	while(get_content(node->next)->value != max_value)
+	while (get_content(node->next)->value != max_value)
 	{
 		counter++;
 		node = node->next;
@@ -163,24 +158,29 @@ int	set_stack_a(t_stacks *stacks)
 		return (opp_rrot(stacks, A), 1);
 	return (-1);
 }
+
 bool	is_stack_sorted(t_stacks *stacks)
 {
-	t_list *node;
+	t_list	*node;
 
 	node = stacks->a.top;
-	while(node && node->next != NULL)
+	while (node && node->next != NULL)
 	{
-		if(!(get_content(node)->value < get_content(node->next)->value))
-			return(false);
+		if (!(get_content(node)->value < get_content(node->next)->value))
+			return (false);
 		node = node->next;
 	}
-	return(true);
+	return (true);
 }
-// ER ZIT HIER OOK EEN FOUT IN DE WHILE LOOP KIJK LOGICA NA EN HERSCHRIJF.
+
+// IK KAN HIERIN NOG EEN EXTRA CHECK TOEVOEGEN DOOR TE GAAN KIJKEN WAAR HET
+// KLEINSTE GETAL VAN STACK STAAT EN WAAR GROOTSTE GETAL TOT DIE PIVOT STAAT 
+// EN BLIJVEN ROTEREN IN MAKKELIJKSTE RICHTING TOT ALLE GETALLEN ZIJ GEWEEST
+// EN TUSSENTIJDS PUSHEN.
 void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 		int pivot_count)
 {
-	int counter;
+	int		counter;
 	t_list	*node;
 
 	counter = 0;
@@ -189,8 +189,12 @@ void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 	{
 		while (node)
 		{
-			if (get_content(node)->value <= pivots[0].value) //NAKIJKEN!!
+			if (get_content(node)->value <= pivots[pivot_count].value)
+			{
 				move_to_b(stacks, counter, ft_lstsize(stacks->a.top));
+				node = stacks->a.top;
+				counter = 0;
+			}
 			node = node->next;
 			counter++;
 		}
@@ -220,7 +224,6 @@ void	move_to_b(t_stacks *stacks, int move_index, int listsize)
 		}
 		opp_push(stacks, B);
 	}
-	
 }
 
 t_list_contents	*find_pivots(t_stacks *stacks, int amount)
@@ -293,7 +296,8 @@ int	find_smallest_pivot(t_list_contents *pivot_options, int size_pivot_list)
 	}
 	return (smallest);
 }
-//MOET OOK HERSCHREVEN WORDEN OF GESPLITS IN MEERDERE FUNCTIES.
+
+// MOET OOK HERSCHREVEN WORDEN OF GESPLITS IN MEERDERE FUNCTIES.
 t_list_contents	*find_pivot_options(t_stacks *stacks, int amount)
 {
 	int				listsize;
