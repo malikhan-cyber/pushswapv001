@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/11 16:53:51 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/11 17:49:25 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,10 @@ void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 	kijk vanaf boven hoeveel getallen niet kleiner zijn, sla op first_smallest
 	kijk vanaf onder hoeveel getallen niet kleiner zijn
 	kijk naar het verschil tussen listsize en laatste getal van onderen, sla op als last_smallest
-	kijk naar hoe groot het getal is 
+	kijk naar hoe groot het getal is als first_smallest > is dan last_smallest + 1 opp_rrot();
+	(listsize - first_smallest) * opp_rrot()
+	last_smallest * opp_rot()
+	 
 	*/
 	i = 0;
 	counter = 0;
@@ -232,11 +235,24 @@ void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 	}
 }
 
+while (!(get(node, 0)->value <= pivots[i].value))
+	{
+		node = node->next;
+		j++;
+	}
+if (get(node, 0)->value <= pivots[i].value)
+	first_smallest = j;
 
+while (listsize != 0)
+	{
+		while 
+	}
 void	move_to_b(t_stacks *stacks, int move_index, int listsize)
 {
 	int	i;
-
+	int first_smallest;
+	int last_smallest;
+	
 	i = move_index;
 	if (move_index <= listsize / 2)
 	{
