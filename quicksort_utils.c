@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/11 17:49:25 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/12 12:01:43 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,102 +173,70 @@ bool	is_stack_sorted(t_stacks *stacks)
 	return (true);
 }
 
-// IK KAN HIERIN NOG EEN EXTRA CHECK TOEVOEGEN DOOR TE GAAN KIJKEN WAAR HET
-// KLEINSTE GETAL VAN STACK STAAT EN WAAR GROOTSTE GETAL TOT DIE PIVOT STAAT 
-// EN BLIJVEN ROTEREN IN MAKKELIJKSTE RICHTING TOT ALLE GETALLEN ZIJ GEWEEST
-// EN TUSSENTIJDS PUSHEN.
 void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
 		int pivot_count)
 {
-	int		counter;
 	int i;
-	t_list	*node;
 
 	i = 0;
-	counter = 0;
-	node = stacks->a.top;
 	while (ft_lstsize(stacks->a.top) != 0)
 	{
-		while (i < pivot_count && node)
+		while (i < pivot_count)
 		{
-			if (get_content(node)->value <= pivots[i].value)
-			{
-				move_to_b(stacks, counter, ft_lstsize(stacks->a.top));
-				node = stacks->a.top;
-				counter = 0;
-			}
-			node = node->next;
+			quickest_quickie_pivots(stacks, pivots[i].value);
 			i++;
-			counter++;
 		}
 	}
 }
-void	start_quickie_pivots(t_stacks *stacks, t_list_contents *pivots,
-		int pivot_count)
+
+void	quickest_quickie_pivots(t_stacks *stacks, int smallest_pivot)
 {
-	int 	pivot_value;
-	int		counter;
 	int i;
-	t_list	*node;
-	/* 
-	kijk vanaf boven hoeveel getallen niet kleiner zijn, sla op first_smallest
-	kijk vanaf onder hoeveel getallen niet kleiner zijn
-	kijk naar het verschil tussen listsize en laatste getal van onderen, sla op als last_smallest
-	kijk naar hoe groot het getal is als first_smallest > is dan last_smallest + 1 opp_rrot();
-	(listsize - first_smallest) * opp_rrot()
-	last_smallest * opp_rot()
-	 
-	*/
-	i = 0;
-	counter = 0;
-	node = stacks->a.top;
-	while (ft_lstsize(stacks->a.top) != 0)
-	{
-		while(i < pivot_count)
-			{
-				pivot_value = pivots[i].value;
-				pivot_position_max();
-				pivot_position_min();
-			}
-			
-		 
-	}
-}
-
-while (!(get(node, 0)->value <= pivots[i].value))
-	{
-		node = node->next;
-		j++;
-	}
-if (get(node, 0)->value <= pivots[i].value)
-	first_smallest = j;
-
-while (listsize != 0)
-	{
-		while 
-	}
-void	move_to_b(t_stacks *stacks, int move_index, int listsize)
-{
-	int	i;
 	int first_smallest;
 	int last_smallest;
-	
-	i = move_index;
-	if (move_index <= listsize / 2)
+	t_list	*node;
+
+	node = stacks->a.top;
+	while(node && (!(get(node, 0)->value <= smallest_pivot)))
 	{
-		while (i != 0)
-		{
-			opp_rot(stacks, A);
-			i--;
-		}
-		opp_push(stacks, B);
+		node = node->next;
+		i++;	
+	}
+	first_smallest = i;
+	last_smallest = first_smallest;
+	while(node)
+	{
+		if (get(node, 0)->value <= smallest_pivot)
+			last_smallest = i;
+		i++;
+		node = node->next;
+	}
+	move_to_b(stacks, first_smallest, last_smallest);
+}
+
+
+void	move_to_b(t_stacks *stacks, int first_smallest, int last_smallest)
+{
+	int listsize;
+	int rrotate;
+
+	listsize = ft_lstsize(stacks->a.top);
+	rrotate = (listsize + 1) - first_smallest;
+	if(rrotate < last_smallest)
+	{
+		while(rrotate != 0)
+			{
+				opp_rrot(stacks, A);
+				rrotate--;
+			}
+			opp_push(stacks, B);
 	}
 	else
 	{
-		while (i != listsize)
+		while (last_smallest != 0)
 		{
-			opp_rrot(stacks, A);
-			i++;
+			opp_rot(stacks, A);
+			last_smallest--;
 		}
 		opp_push(stacks, B);
 	}
