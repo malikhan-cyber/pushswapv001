@@ -6,7 +6,7 @@
 /*   By: alkhan <alkhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:45 by alkhan            #+#    #+#             */
-/*   Updated: 2026/05/12 12:01:43 by alkhan           ###   ########.fr       */
+/*   Updated: 2026/05/12 14:41:21 by alkhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,6 +295,7 @@ int	find_smallest_pivot(t_list_contents *pivot_options, int size_pivot_list)
 	smallest = 0;
 	while (i != size_pivot_list)
 	{
+		
 		if (pivot_options[i].value < pivot_options[smallest].value)
 			smallest = i;
 		i++;
